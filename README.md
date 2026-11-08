@@ -136,6 +136,14 @@ Results-driven enterprise technology leader with 10+ years of experience across 
 
 ## Selected Projects
 
+### [AWS Patch Manager Lab](./aws-patch-manager-lab/README.md)
+
+Patched Linux and Windows EC2 instances using AWS Systems Manager, configured a custom Windows patch baseline, and verified compliance. Includes a walkthrough and 15 screenshots.
+
+**Focus:** AWS Systems Manager • EC2 • Patch Management • Systems Hardening
+
+---
+
 ### [Incident Handler's Journal](https://docs.google.com/document/d/18eO6JIdHI22GwD0ZkqaHr7_n3edjr3Ry0yFmTq9yJu0/edit?usp=sharing)
 
 Documented simulated security incidents from detection through response, recording the who, what, when, where, and why of each event along with the tools used and lessons learned.
