@@ -136,6 +136,38 @@ Results-driven enterprise technology leader with 10+ years of experience across 
 
 ## Selected Projects
 
+### [AWS KMS Encryption Lab](./labs/aws-kms-encryption-lab.md)
+
+Created a symmetric KMS key and used the AWS Encryption CLI on EC2 to encrypt and decrypt files. Documented troubleshooting for Python and package compatibility.
+
+**Focus:** AWS KMS • Encryption • EC2 • Troubleshooting
+
+---
+
+### [Amazon Aurora Introduction Lab](./labs/aws-aurora-intro-lab.md)
+
+Provisioned an Aurora MySQL-compatible cluster, connected from EC2 through Session Manager, and created, populated, and queried a database table.
+
+**Focus:** Amazon Aurora • RDS • EC2 • SQL
+
+---
+
+### [EC2 Monitoring and Alerting Lab](./labs/aws-ec2-monitoring-lab.md)
+
+Configured CloudWatch alarms and an SNS email subscription, stress-tested an EC2 instance, verified alert delivery, and created a monitoring dashboard.
+
+**Focus:** Amazon CloudWatch • SNS • EC2 • Monitoring
+
+---
+
+### [SQL Functions Lab](./labs/aws-sql-functions-lab.md)
+
+Queried a MariaDB sample database using aggregate functions, string functions, and DISTINCT. Solved a challenge that splits a compound region name into separate columns.
+
+**Focus:** SQL • MariaDB • Data Analysis • String Functions
+
+---
+
 ### [AWS Patch Manager Lab](./aws-patch-manager-lab/README.md)
 
 Patched Linux and Windows EC2 instances using AWS Systems Manager, configured a custom Windows patch baseline, and verified compliance. Includes a walkthrough and 15 screenshots.
