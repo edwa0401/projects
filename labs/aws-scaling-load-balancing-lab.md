@@ -211,13 +211,3 @@ With `Web Server AMI` already captured in Task 1 and the Auto Scaling group prov
 - **Browser-level security behavior can block a lab task without the AWS configuration being wrong at all.** The load balancer here was correctly HTTP-only by design (per the lab's own Task 2 instructions), but the browser's own HTTPS-upgrade behavior made that endpoint unreachable through normal navigation. The fix wasn't to change the AWS setup or to weaken browser security settings — it was to verify the same behavior through a different, already-available tool (EC2 Instance Connect + `curl`), which is a good general pattern: when a *client's* behavior is the obstacle, look for another client, not a workaround on the server side.
 - **`create-image` is identical whether it's clicked or scripted.** The Optional Challenge confirmed the CLI and console paths produce the same result, which is exactly what you'd want before trusting an automated AMI-refresh pipeline.
 
-## Lab Cleanup
-
-This lab session was intentionally **left running** rather than submitted or ended, so the environment stays available for manual review and submission. Final state at the end of this write-up:
-
-- Auto Scaling group: 4 running `Lab Instance` EC2 instances (scaled out from 2) behind `LabELB`, scaling policy intact and able to scale back in automatically as CPU normalizes.
-- `Web Server 1` (the original source instance): terminated.
-- Two AMIs retained: `Web Server AMI` (console) and `Web-Server-AMI-CLI-1794222318` (CLI).
-
----
-*Completed as part of ongoing hands-on AWS cloud infrastructure practice.*
