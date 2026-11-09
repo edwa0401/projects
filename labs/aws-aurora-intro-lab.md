@@ -109,9 +109,3 @@ Created the cluster from RDS → Create database → **Full configuration**:
 - **Security groups are the real gatekeeper, not public access.** With Public access set to No and only `DBSecurityGroup` attached (default SG removed), connectivity still worked cleanly from inside the VPC — the lab's dedicated security group did the actual work.
 - **MariaDB client == MySQL protocol compatibility.** `yum install mariadb` is enough to get a working `mysql` CLI against an Aurora MySQL-compatible cluster; no engine-specific client needed.
 
-## Lab Cleanup
-
-Ended the lab session via the AWS Skill Builder console (**End Lab** → confirmed), which tears down all lab-provisioned resources (Aurora cluster/instance, EC2 command host, VPC/security groups) automatically.
-
----
-*Completed as part of ongoing hands-on AWS cloud/database practice.*
