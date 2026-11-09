@@ -1,4 +1,4 @@
-<img src="./ryan-edwards-github-header.png" alt="Ryan Edwards - Enterprise Cloud & AI Architect | Cloud, AI, Cybersecurity, Customer Success" width="100%">
+<img src="https://raw.githubusercontent.com/edwa0401/projects/main/ryan-edwards-github-header.png" alt="Ryan Edwards - Enterprise Cloud & AI Architect | Cloud, AI, Cybersecurity, Customer Success" width="100%">
 
 <h2 align="center">Enterprise Cloud & AI Architect | Cybersecurity | Customer Success</h2>
 
@@ -136,7 +136,7 @@ Results-driven enterprise technology leader with 10+ years of experience across 
 
 ## Selected Projects
 
-### [AWS EC2 Deployment & CLI Troubleshooting](./labs/aws-ec2-cli-troubleshooting-lab.md)
+### [AWS EC2 Deployment & CLI Troubleshooting](https://github.com/edwa0401/projects/blob/main/labs/aws-ec2-cli-troubleshooting-lab.md)
 
 Diagnosed a faulty AWS CLI launch script and EC2 connectivity issues to deploy a LAMP-based café application. Used CLI error messages and Nmap to investigate provisioning failures and HTTP access.
 
@@ -144,7 +144,7 @@ Diagnosed a faulty AWS CLI launch script and EC2 connectivity issues to deploy a
 
 ---
 
-### [AWS CLI Setup & IAM Access Inspection](./labs/aws-cli-iam-lab.md)
+### [AWS CLI Setup & IAM Access Inspection](https://github.com/edwa0401/projects/blob/main/labs/aws-cli-iam-lab.md)
 
 Installed and configured the AWS CLI on EC2, connected through SSH, and inspected IAM users and policies. Compared console workflows with CLI commands to build practical identity and access management skills.
 
@@ -152,7 +152,7 @@ Installed and configured the AWS CLI on EC2, connected through SSH, and inspecte
 
 ---
 
-### [Highly Available Web Architecture with EC2 Auto Scaling](./labs/aws-scaling-load-balancing-lab.md)
+### [Highly Available Web Architecture with EC2 Auto Scaling](https://github.com/edwa0401/projects/blob/main/labs/aws-scaling-load-balancing-lab.md)
 
 Built an Application Load Balancer and EC2 Auto Scaling group across two Availability Zones using a custom AMI and launch template. Generated CPU load to demonstrate automatic capacity scaling.
 
@@ -160,7 +160,7 @@ Built an Application Load Balancer and EC2 Auto Scaling group across two Availab
 
 ---
 
-### [Amazon S3 Website Hosting & Deployment Automation](./labs/creating-a-website-on-s3.md)
+### [Amazon S3 Website Hosting & Deployment Automation](https://github.com/edwa0401/projects/blob/main/labs/creating-a-website-on-s3.md)
 
 Deployed a café and bakery static website to Amazon S3 using the AWS CLI. Configured website hosting and access, then wrote a reusable deployment script to publish content updates.
 
@@ -168,7 +168,7 @@ Deployed a café and bakery static website to Amazon S3 using the AWS CLI. Confi
 
 ---
 
-### [SQL Data Management & Backup Restoration](./labs/aws-insert-update-delete-lab.md)
+### [SQL Data Management & Backup Restoration](https://github.com/edwa0401/projects/blob/main/labs/aws-insert-update-delete-lab.md)
 
 Practiced INSERT, UPDATE, and DELETE operations against a MariaDB sample database, explored the effect of WHERE clauses, and restored table data from an SQL backup.
 
@@ -176,7 +176,7 @@ Practiced INSERT, UPDATE, and DELETE operations against a MariaDB sample databas
 
 ---
 
-### [SQL Querying, Filtering & Data Exploration](./labs/aws-select-data-database-lab.md)
+### [SQL Querying, Filtering & Data Exploration](https://github.com/edwa0401/projects/blob/main/labs/aws-select-data-database-lab.md)
 
 Queried a MariaDB world database using SELECT, COUNT, aliases, sorting, and conditional filters. Combined query techniques to answer a specific business question.
 
@@ -184,7 +184,7 @@ Queried a MariaDB world database using SELECT, COUNT, aliases, sorting, and cond
 
 ---
 
-### [AWS KMS Encryption Lab](./labs/aws-kms-encryption-lab.md)
+### [AWS KMS Encryption Lab](https://github.com/edwa0401/projects/blob/main/labs/aws-kms-encryption-lab.md)
 
 Created a symmetric KMS key and used the AWS Encryption CLI on EC2 to encrypt and decrypt files. Documented troubleshooting for Python and package compatibility.
 
@@ -192,7 +192,7 @@ Created a symmetric KMS key and used the AWS Encryption CLI on EC2 to encrypt an
 
 ---
 
-### [Amazon Aurora MySQL Database Deployment](./labs/aws-aurora-intro-lab.md)
+### [Amazon Aurora MySQL Database Deployment](https://github.com/edwa0401/projects/blob/main/labs/aws-aurora-intro-lab.md)
 
 Provisioned an Amazon Aurora MySQL-compatible cluster and connected from EC2 through Systems Manager Session Manager. Created, populated, and queried a database table to demonstrate an end-to-end managed database workflow.
 
@@ -200,7 +200,7 @@ Provisioned an Amazon Aurora MySQL-compatible cluster and connected from EC2 thr
 
 ---
 
-### [EC2 Monitoring and Alerting Lab](./labs/aws-ec2-monitoring-lab.md)
+### [EC2 Monitoring and Alerting Lab](https://github.com/edwa0401/projects/blob/main/labs/aws-ec2-monitoring-lab.md)
 
 Configured CloudWatch alarms and an SNS email subscription, stress-tested an EC2 instance, verified alert delivery, and created a monitoring dashboard.
 
@@ -208,7 +208,7 @@ Configured CloudWatch alarms and an SNS email subscription, stress-tested an EC2
 
 ---
 
-### [SQL Functions Lab](./labs/aws-sql-functions-lab.md)
+### [SQL Functions Lab](https://github.com/edwa0401/projects/blob/main/labs/aws-sql-functions-lab.md)
 
 Queried a MariaDB sample database using aggregate functions, string functions, and DISTINCT. Solved a challenge that splits a compound region name into separate columns.
 
@@ -216,7 +216,7 @@ Queried a MariaDB sample database using aggregate functions, string functions, a
 
 ---
 
-### [AWS Patch Manager Lab](./labs/aws-patch-manager-lab/README.md)
+### [AWS Patch Manager Lab](https://github.com/edwa0401/projects/blob/main/labs/aws-patch-manager-lab/README.md)
 
 Patched Linux and Windows EC2 instances using AWS Systems Manager, configured a custom Windows patch baseline, and verified compliance. Includes a walkthrough and 15 screenshots.
 
