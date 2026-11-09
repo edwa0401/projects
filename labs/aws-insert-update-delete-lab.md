@@ -149,9 +149,3 @@ world database
 - **A `.sql` backup file piped into the `mysql` client (`mysql ... < file.sql`) is the standard, fast way to bulk-load or restore a database** — far more practical than hand-writing hundreds of `INSERT` statements, and it's the same mechanism used for real-world backup/restore workflows.
 - **`SET FOREIGN_KEY_CHECKS = 0` before a `DELETE`** is a common pattern when a table has foreign key relationships that would otherwise block the delete — worth remembering as a troubleshooting step for constraint errors.
 
-## Lab Cleanup
-
-Ended the lab session via the AWS Skill Builder console, which tears down all lab-provisioned resources (EC2 Command Host and the MariaDB instance) automatically.
-
----
-*Completed as part of ongoing hands-on AWS cloud/database practice.*
