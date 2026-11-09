@@ -86,7 +86,7 @@ On the bucket's **Permissions** tab in the AWS Management Console:
 - **Block public access (bucket settings):** edited and turned **off** "Block all public access" (confirmed with the "confirm" acknowledgment prompt).
 - **Object Ownership:** switched from "Bucket owner enforced" (ACLs disabled) to **ACLs enabled**, acknowledging that ACLs would be restored.
 
-![Block public access off, ACLs enabled](screenshots/04-bucket-permissions.jpg)
+![Block public access off, ACLs enabled](screenshots/creating-a-website-on-s3/04-bucket-permissions.jpg)
 
 **Result:** The bucket can now accept public-read ACLs on uploaded objects, which the upload step depends on.
 
@@ -99,7 +99,7 @@ cd static-website
 ls
 ```
 
-![Extracted site files: index.html, css/, images/](screenshots/02-extract-files.jpg)
+![Extracted site files: index.html, css/, images/](screenshots/creating-a-website-on-s3/02-extract-files.jpg)
 
 **Result:** Confirmed `index.html` plus `css/` and `images/` directories for the Café & Bakery site.
 
@@ -112,11 +112,11 @@ aws s3 cp /home/ec2-user/sysops-activity-files/static-website/ s3://redwards519/
 aws s3 ls redwards519
 ```
 
-![Static website hosting enabled, files uploaded with public-read ACL](screenshots/03-upload-to-s3.jpg)
+![Static website hosting enabled, files uploaded with public-read ACL](screenshots/creating-a-website-on-s3/03-upload-to-s3.jpg)
 
 Loaded the site to confirm it rendered (via the bucket's HTTPS object URL — see Finding below):
 
-![Café & Bakery site live on S3, original aquamarine/orange colors](screenshots/05-site-live-before.jpg)
+![Café & Bakery site live on S3, original aquamarine/orange colors](screenshots/creating-a-website-on-s3/05-site-live-before.jpg)
 
 **Result:** All files (`index.html`, `css/styles.css`, 7 images) uploaded and publicly readable; site rendered correctly.
 
@@ -145,9 +145,9 @@ sed -i '31s/bgcolor="aquamarine"/bgcolor="gainsboro"/; \
 ./update-website.sh
 ```
 
-![update-website.sh re-uploading all files after the color edit](screenshots/06-update-script-run.jpg)
+![update-website.sh re-uploading all files after the color edit](screenshots/creating-a-website-on-s3/06-update-script-run.jpg)
 
-![Café & Bakery site live with new gainsboro/cornsilk colors](screenshots/07-site-live-after.jpg)
+![Café & Bakery site live with new gainsboro/cornsilk colors](screenshots/creating-a-website-on-s3/07-site-live-after.jpg)
 
 **Result:** Running `./update-website.sh` re-uploaded all files in one command, and the live site reflected the new colors immediately — the repeatable deploy path works.
 
