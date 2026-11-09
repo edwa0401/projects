@@ -102,6 +102,3 @@ AWS KMS                          EC2 "File Server" (Session Manager, no SSH key)
 
 In this lab, created a symmetric AWS KMS key (`MyKMSKey`) scoped to the `voclabs` role, configured a File Server EC2 instance with temporary session credentials and the AWS Encryption CLI, and ran a full encrypt/decrypt cycle against the key. Along the way, diagnosed and fixed a real Python-version/package-version incompatibility (`aws-encryption-sdk-cli` 4.3.0 vs. Python 3.7) by pinning to a compatible dependency set — the kind of packaging issue that shows up constantly outside of tutorial-perfect environments.
 
-Ended the lab in Vocareum afterward to tear down resources.
-
-- Related: [[cloud-projects]]
