@@ -101,9 +101,4 @@ CloudWatch Dashboard                      Email Subscription
 - **Dashboards are for humans, alarms are for automation** — the dashboard doesn't trigger anything by itself; it's a visualization layer on top of the same metrics the alarm watches.
 - This pattern (metric → alarm → SNS → email) is the minimal viable building block for most AWS operational alerting, and extends naturally to Lambda, Auto Scaling, or incident-management integrations as the "action" instead of (or in addition to) email.
 
-## Lab Cleanup
 
-Ended the lab session via the AWS Skill Builder console, which tears down all lab-provisioned resources (EC2 instance, SNS topic/subscription, CloudWatch alarm and dashboard) automatically.
-
----
-*Completed as part of ongoing hands-on AWS cloud monitoring/observability practice.*
