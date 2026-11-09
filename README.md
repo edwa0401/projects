@@ -136,6 +136,54 @@ Results-driven enterprise technology leader with 10+ years of experience across 
 
 ## Selected Projects
 
+### [AWS EC2 Deployment & CLI Troubleshooting](./labs/aws-ec2-cli-troubleshooting-lab.md)
+
+Diagnosed a faulty AWS CLI launch script and EC2 connectivity issues to deploy a LAMP-based café application. Used CLI error messages and Nmap to investigate provisioning failures and HTTP access.
+
+**Focus:** EC2 • AWS CLI • Linux • Nmap • Troubleshooting
+
+---
+
+### [AWS CLI Setup & IAM Access Inspection](./labs/aws-cli-iam-lab.md)
+
+Installed and configured the AWS CLI on EC2, connected through SSH, and inspected IAM users and policies. Compared console workflows with CLI commands to build practical identity and access management skills.
+
+**Focus:** AWS CLI • IAM • EC2 • SSH
+
+---
+
+### [Highly Available Web Architecture with EC2 Auto Scaling](./labs/aws-scaling-load-balancing-lab.md)
+
+Built an Application Load Balancer and EC2 Auto Scaling group across two Availability Zones using a custom AMI and launch template. Generated CPU load to demonstrate automatic capacity scaling.
+
+**Focus:** EC2 • Auto Scaling • Application Load Balancer • High Availability
+
+---
+
+### [Amazon S3 Website Hosting & Deployment Automation](./labs/creating-a-website-on-s3.md)
+
+Deployed a café and bakery static website to Amazon S3 using the AWS CLI. Configured website hosting and access, then wrote a reusable deployment script to publish content updates.
+
+**Focus:** Amazon S3 • AWS CLI • Static Website Hosting • Bash
+
+---
+
+### [SQL Data Management & Backup Restoration](./labs/aws-insert-update-delete-lab.md)
+
+Practiced INSERT, UPDATE, and DELETE operations against a MariaDB sample database, explored the effect of WHERE clauses, and restored table data from an SQL backup.
+
+**Focus:** SQL • MariaDB • Data Manipulation • Backup Restoration
+
+---
+
+### [SQL Querying, Filtering & Data Exploration](./labs/aws-select-data-database-lab.md)
+
+Queried a MariaDB world database using SELECT, COUNT, aliases, sorting, and conditional filters. Combined query techniques to answer a specific business question.
+
+**Focus:** SQL • MariaDB • Data Analysis • Query Filters
+
+---
+
 ### [AWS KMS Encryption Lab](./labs/aws-kms-encryption-lab.md)
 
 Created a symmetric KMS key and used the AWS Encryption CLI on EC2 to encrypt and decrypt files. Documented troubleshooting for Python and package compatibility.
@@ -144,9 +192,9 @@ Created a symmetric KMS key and used the AWS Encryption CLI on EC2 to encrypt an
 
 ---
 
-### [Amazon Aurora Introduction Lab](./labs/aws-aurora-intro-lab.md)
+### [Amazon Aurora MySQL Database Deployment](./labs/aws-aurora-intro-lab.md)
 
-Provisioned an Aurora MySQL-compatible cluster, connected from EC2 through Session Manager, and created, populated, and queried a database table.
+Provisioned an Amazon Aurora MySQL-compatible cluster and connected from EC2 through Systems Manager Session Manager. Created, populated, and queried a database table to demonstrate an end-to-end managed database workflow.
 
 **Focus:** Amazon Aurora • RDS • EC2 • SQL
 
@@ -168,7 +216,7 @@ Queried a MariaDB sample database using aggregate functions, string functions, a
 
 ---
 
-### [AWS Patch Manager Lab](./aws-patch-manager-lab/README.md)
+### [AWS Patch Manager Lab](./labs/aws-patch-manager-lab/README.md)
 
 Patched Linux and Windows EC2 instances using AWS Systems Manager, configured a custom Windows patch baseline, and verified compliance. Includes a walkthrough and 15 screenshots.
 
