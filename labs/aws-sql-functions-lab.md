@@ -115,9 +115,3 @@ WHERE Region = 'Micronesia/Caribbean';
 - **Aggregate functions on a full column (no GROUP BY) collapse to a single summary row** — useful for quick sanity checks on a dataset (total/average/extremes/count) before writing more targeted queries.
 - **Real-world data has messy compound fields** (like `"Micronesia/Caribbean"`) that look like one value but represent two — string functions are often the cleanest way to normalize that without rewriting the underlying data.
 
-## Lab Cleanup
-
-Ended the lab session via the AWS Skill Builder console, which tears down all lab-provisioned resources (EC2 Command Host and the MariaDB instance) automatically.
-
----
-*Completed as part of ongoing hands-on AWS cloud/database practice.*
