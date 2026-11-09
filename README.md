@@ -224,6 +224,14 @@ Patched Linux and Windows EC2 instances using AWS Systems Manager, configured a 
 
 ---
 
+### [Migrating to Amazon RDS](https://github.com/edwa0401/projects/blob/main/labs/aws-migrating-to-amazon-rds-lab.md)
+
+Migrated a live café application from a self-managed MariaDB database to Amazon RDS, provisioning new subnets, a DB subnet group, and a locked-down security group. Diagnosed a genuine RDS DNS propagation gap down to the authoritative Route 53 level and fixed it with a static hosts-file override rather than weakening TLS verification, then cut the app over to RDS through a single Parameter Store edit and confirmed it with live CloudWatch monitoring.
+
+**Focus:** Amazon RDS • MariaDB • VPC Networking • DNS Troubleshooting • Systems Manager
+
+---
+
 ### [Incident Handler's Journal](https://docs.google.com/document/d/18eO6JIdHI22GwD0ZkqaHr7_n3edjr3Ry0yFmTq9yJu0/edit?usp=sharing)
 
 Documented simulated security incidents from detection through response, recording the who, what, when, where, and why of each event along with the tools used and lessons learned.
