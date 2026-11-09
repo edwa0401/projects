@@ -17,7 +17,7 @@ I help organizations turn complex technical requirements into secure, scalable c
 </p>
 
 <p align="center">
-<a href="https://sites.google.com/view/ryanhedwards/home">Portfolio</a> •
+<a href="https://sites.google.com/view/ryanhedwards">Portfolio</a> •
 <a href="https://www.linkedin.com/in/ryanhedwards/">LinkedIn</a> •
 <a href="mailto:ryan.h.edwards@gmail.com">Email</a>
 </p>
@@ -314,6 +314,6 @@ Cloud architecture for small businesses and nonprofits
 
 <p align="center">
 <a href="https://www.linkedin.com/in/ryanhedwards/">LinkedIn</a> •
-<a href="https://sites.google.com/view/ryanhedwards/home">Portfolio</a> •
+<a href="https://sites.google.com/view/ryanhedwards">Portfolio</a> •
 <a href="mailto:ryan.h.edwards@gmail.com">Email</a>
 </p>
