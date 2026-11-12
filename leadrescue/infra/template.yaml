@@ -1,0 +1,373 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  LeadRescue (CloudQuest Business Solutions Lab): staff-reviewed AI inquiry triage for a moving company.
+  Cognito + API Gateway HTTP API + Lambda (Python 3.12) + DynamoDB + Amazon Bedrock + CloudFront/S3.
+  Deploying this stack creates billable resources. Delete with `sam delete` when finished.
+
+Parameters:
+  BedrockModelId:
+    Type: String
+    Description: >
+      Bedrock model ID or inference profile ID that supports the Converse API with tool use
+      (example: us.anthropic.claude-haiku-4-5-20251001-v1:0). Confirm availability for your account and Region in the Bedrock console first.
+    MinLength: 3
+  BedrockToolChoice:
+    Type: String
+    Default: auto
+    AllowedValues: [auto, tool]
+    Description: Use "auto" unless you have verified your model supports forced tool choice.
+  BedrockFoundationModelArnPattern:
+    Type: String
+    Default: "arn:aws:bedrock:*::foundation-model/*"
+    Description: >
+      Foundation-model ARNs the function may invoke. Narrow this to the specific model, e.g.
+      arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0 (wildcard Region is needed for cross-Region inference profiles).
+  CognitoDomainPrefix:
+    Type: String
+    AllowedPattern: "^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$"
+    Description: Globally unique prefix for the Cognito Hosted UI domain (lowercase letters, digits, hyphens).
+  AllowedOrigin:
+    Type: String
+    Default: http://localhost:5173
+    Description: Extra browser origin allowed for CORS and sign-in callbacks (the CloudFront URL is always allowed).
+  StaffDirectory:
+    Type: String
+    Default: ""
+    Description: Optional JSON list of {"id","name","role"} used for assignment. Leave empty for the sample directory.
+  LogRetentionDays:
+    Type: Number
+    Default: 30
+    AllowedValues: [7, 14, 30, 60, 90, 180, 365]
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures: [arm64]
+    MemorySize: 512
+    Timeout: 29
+
+Resources:
+  # ---------------- Data ----------------
+  InquiriesTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - { AttributeName: id, AttributeType: S }
+        - { AttributeName: workspace, AttributeType: S }
+        - { AttributeName: createdAt, AttributeType: S }
+      KeySchema:
+        - { AttributeName: id, KeyType: HASH }
+      GlobalSecondaryIndexes:
+        - IndexName: byWorkspace
+          KeySchema:
+            - { AttributeName: workspace, KeyType: HASH }
+            - { AttributeName: createdAt, KeyType: RANGE }
+          Projection: { ProjectionType: ALL }
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+
+  AuditTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - { AttributeName: inquiryId, AttributeType: S }
+        - { AttributeName: sk, AttributeType: S }
+      KeySchema:
+        - { AttributeName: inquiryId, KeyType: HASH }
+        - { AttributeName: sk, KeyType: RANGE }
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+
+  AchievementsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Retain
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - { AttributeName: userId, AttributeType: S }
+        - { AttributeName: awardKey, AttributeType: S }
+      KeySchema:
+        - { AttributeName: userId, KeyType: HASH }
+        - { AttributeName: awardKey, KeyType: RANGE }
+      SSESpecification: { SSEEnabled: true }
+
+  IdempotencyTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - { AttributeName: key, AttributeType: S }
+      KeySchema:
+        - { AttributeName: key, KeyType: HASH }
+      TimeToLiveSpecification: { AttributeName: expiresAt, Enabled: true }
+      SSESpecification: { SSEEnabled: true }
+
+  # ---------------- Staff authentication ----------------
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub "${AWS::StackName}-staff"
+      AdminCreateUserConfig: { AllowAdminCreateUserOnly: true }
+      UsernameAttributes: [email]
+      AutoVerifiedAttributes: [email]
+      MfaConfiguration: OPTIONAL
+      EnabledMfas: [SOFTWARE_TOKEN_MFA]
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 12
+          RequireLowercase: true
+          RequireUppercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          TemporaryPasswordValidityDays: 3
+      AccountRecoverySetting:
+        RecoveryMechanisms: [{ Name: verified_email, Priority: 1 }]
+      Schema:
+        - { Name: email, AttributeDataType: String, Required: true, Mutable: true }
+        - { Name: name, AttributeDataType: String, Required: false, Mutable: true }
+
+  StaffGroup:
+    Type: AWS::Cognito::UserPoolGroup
+    Properties:
+      GroupName: staff
+      Description: Staff who may review, approve, and resolve inquiries.
+      UserPoolId: !Ref UserPool
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Ref CognitoDomainPrefix
+      UserPoolId: !Ref UserPool
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: leadrescue-web
+      GenerateSecret: false
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: [code]
+      AllowedOAuthScopes: [openid, email, profile]
+      SupportedIdentityProviders: [COGNITO]
+      CallbackURLs:
+        - !Sub "https://${SiteDistribution.DomainName}/auth/callback"
+        - !Sub "${AllowedOrigin}/auth/callback"
+      LogoutURLs:
+        - !Sub "https://${SiteDistribution.DomainName}/signin"
+        - !Sub "${AllowedOrigin}/signin"
+      ExplicitAuthFlows: [ALLOW_USER_SRP_AUTH, ALLOW_REFRESH_TOKEN_AUTH]
+      PreventUserExistenceErrors: ENABLED
+      EnableTokenRevocation: true
+      AccessTokenValidity: 60
+      IdTokenValidity: 60
+      RefreshTokenValidity: 60
+      TokenValidityUnits: { AccessToken: minutes, IdToken: minutes, RefreshToken: minutes }
+
+  # ---------------- API ----------------
+  ApiAccessLogs:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      RetentionInDays: !Ref LogRetentionDays
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+      AccessLogSettings:
+        DestinationArn: !GetAtt ApiAccessLogs.Arn
+        Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","method":"$context.httpMethod","route":"$context.routeKey","status":"$context.status","latency":"$context.responseLatency","authError":"$context.authorizer.error"}'
+      CorsConfiguration:
+        AllowOrigins:
+          - !Sub "https://${SiteDistribution.DomainName}"
+          - !Ref AllowedOrigin
+        AllowHeaders: [authorization, content-type, idempotency-key]
+        AllowMethods: [GET, POST, PATCH, OPTIONS]
+        ExposeHeaders: [idempotent-replay]
+        MaxAge: 600
+      Auth:
+        DefaultAuthorizer: CognitoJwt
+        Authorizers:
+          CognitoJwt:
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              issuer: !Sub "https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}"
+              audience: [!Ref UserPoolClient]
+
+  ApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${AWS::StackName}-api"
+      RetentionInDays: !Ref LogRetentionDays
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-api"
+      Description: LeadRescue API (validation, workflow, Bedrock analysis, audit).
+      CodeUri: ../backend/src/
+      Handler: leadrescue.api.lambda_handler
+      ReservedConcurrentExecutions: 10
+      LoggingConfig:
+        LogGroup: !Ref ApiLogGroup
+      Environment:
+        Variables:
+          AI_PROVIDER: bedrock
+          STORE: dynamodb
+          STAFF_GROUP: staff
+          STAFF_DIRECTORY: !Ref StaffDirectory
+          BEDROCK_MODEL_ID: !Ref BedrockModelId
+          BEDROCK_TOOL_CHOICE: !Ref BedrockToolChoice
+          BEDROCK_REGION: !Ref AWS::Region
+          TABLE_INQUIRIES: !Ref InquiriesTable
+          TABLE_AUDIT: !Ref AuditTable
+          TABLE_ACHIEVEMENTS: !Ref AchievementsTable
+          TABLE_IDEMPOTENCY: !Ref IdempotencyTable
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Sid: Inquiries
+              Effect: Allow
+              Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:Query]
+              Resource:
+                - !GetAtt InquiriesTable.Arn
+                - !Sub "${InquiriesTable.Arn}/index/byWorkspace"
+            - Sid: AuditAppendAndRead
+              Effect: Allow
+              Action: [dynamodb:PutItem, dynamodb:Query]
+              Resource: !GetAtt AuditTable.Arn
+            - Sid: Achievements
+              Effect: Allow
+              Action: [dynamodb:PutItem, dynamodb:Query]
+              Resource: !GetAtt AchievementsTable.Arn
+            - Sid: Idempotency
+              Effect: Allow
+              Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:DeleteItem]
+              Resource: !GetAtt IdempotencyTable.Arn
+            - Sid: BedrockConverse
+              Effect: Allow
+              Action: [bedrock:InvokeModel]
+              Resource:
+                - !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/${BedrockModelId}"
+                - !Ref BedrockFoundationModelArnPattern
+      Events:
+        Health: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/health, Method: GET, Auth: { Authorizer: NONE } } }
+        Config: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/config, Method: GET } }
+        ListInquiries: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/inquiries, Method: GET } }
+        CreateInquiry: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/inquiries, Method: POST } }
+        GetInquiry: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: "/api/inquiries/{id}", Method: GET } }
+        UpdateInquiry: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: "/api/inquiries/{id}", Method: PATCH } }
+        AnalyzeInquiry: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: "/api/inquiries/{id}/analyze", Method: POST } }
+        ApproveInquiry: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: "/api/inquiries/{id}/approve", Method: POST } }
+        ResolveInquiry: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: "/api/inquiries/{id}/resolve", Method: POST } }
+        Metrics: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/metrics, Method: GET } }
+        Progress: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/progress, Method: GET } }
+        PracticeStart: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/practice/start, Method: POST } }
+        PracticeReset: { Type: HttpApi, Properties: { ApiId: !Ref HttpApi, Path: /api/practice/reset, Method: POST } }
+
+  # ---------------- Frontend hosting ----------------
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules: [{ ObjectOwnership: BucketOwnerEnforced }]
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 }
+
+  SiteOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AWS::StackName}-site-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  SiteDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: LeadRescue web app
+        DefaultRootObject: index.html
+        HttpVersion: http2
+        PriceClass: PriceClass_100
+        Origins:
+          - Id: site
+            DomainName: !GetAtt SiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt SiteOriginAccessControl.Id
+            S3OriginConfig: { OriginAccessIdentity: "" }
+        DefaultCacheBehavior:
+          TargetOriginId: site
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03 # Managed-SecurityHeadersPolicy
+        CustomErrorResponses: # SPA routing
+          - { ErrorCode: 403, ResponseCode: 200, ResponsePagePath: /index.html, ErrorCachingMinTTL: 0 }
+          - { ErrorCode: 404, ResponseCode: 200, ResponsePagePath: /index.html, ErrorCachingMinTTL: 0 }
+
+  SiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref SiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontRead
+            Effect: Allow
+            Principal: { Service: cloudfront.amazonaws.com }
+            Action: s3:GetObject
+            Resource: !Sub "${SiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${SiteDistribution}"
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource: [!GetAtt SiteBucket.Arn, !Sub "${SiteBucket.Arn}/*"]
+            Condition: { Bool: { aws:SecureTransport: "false" } }
+
+Outputs:
+  ApiUrl:
+    Description: Base URL for VITE_API_BASE_URL
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+  SiteUrl:
+    Description: Web app URL
+    Value: !Sub "https://${SiteDistribution.DomainName}"
+  SiteBucketName:
+    Value: !Ref SiteBucket
+  DistributionId:
+    Value: !Ref SiteDistribution
+  UserPoolId:
+    Value: !Ref UserPool
+  UserPoolClientId:
+    Description: VITE_COGNITO_CLIENT_ID
+    Value: !Ref UserPoolClient
+  CognitoDomain:
+    Description: VITE_COGNITO_DOMAIN
+    Value: !Sub "https://${CognitoDomainPrefix}.auth.${AWS::Region}.amazoncognito.com"
+  ApiFunctionName:
+    Value: !Ref ApiFunction

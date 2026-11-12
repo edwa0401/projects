@@ -1,0 +1,14 @@
+node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+backend/data/local/
+**/__pycache__/
+.pytest_cache/
+.aws-sam/
+infra/samconfig.toml
+.env
+frontend/.env
+frontend/.env.local
+*.tmp
+*.tsbuildinfo

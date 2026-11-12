@@ -1,0 +1,1 @@
+# Lambda runtime dependencies: none beyond the Python 3.12 runtime (boto3/botocore are provided by AWS Lambda).

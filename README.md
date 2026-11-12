@@ -136,6 +136,14 @@ Results-driven enterprise technology leader with 10+ years of experience across 
 
 ## Selected Projects
 
+### [LeadRescue: AI Inquiry Triage with Human Approval](https://github.com/edwa0401/projects/blob/main/leadrescue/README.md)
+
+Built a working staff-facing app that helps a moving company classify quote requests, schedule changes, and urgent issues, extract stated details, and draft replies that staff verify and approve before anything is sent. Includes prompt-injection guardrails, audit history, a gamified practice challenge, a 52-case evaluation set with honestly reported results, and AWS SAM infrastructure.
+
+**Focus:** Amazon Bedrock • Lambda (Python) • API Gateway • Cognito • DynamoDB • React/TypeScript • AWS SAM • AI Evaluation
+
+---
+
 ### [AWS EC2 Deployment & CLI Troubleshooting](https://github.com/edwa0401/projects/blob/main/labs/aws-ec2-cli-troubleshooting-lab.md)
 
 Diagnosed a faulty AWS CLI launch script and EC2 connectivity issues to deploy a LAMP-based café application. Used CLI error messages and Nmap to investigate provisioning failures and HTTP access.

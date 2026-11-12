@@ -1,0 +1,498 @@
+{
+  "provider": "demo",
+  "modelId": "demo-rules-v1",
+  "runAt": "2026-11-12T11:19:45+00:00",
+  "cases": 52,
+  "failedCalls": [],
+  "classificationAccuracy": 0.8846,
+  "urgentRecall": 0.6667,
+  "urgentCases": 12,
+  "urgentFlagged": 8,
+  "extraction": {
+    "labeledFacts": 73,
+    "missed": 11,
+    "mismatched": 1,
+    "inventedInRawOutput": 0,
+    "inventedAfterGuardrails": 0,
+    "groundedValuesForUnlabeledFields": 6
+  },
+  "latencyMs": {
+    "p50": 0.3,
+    "p95": 0.8,
+    "mean": 0.4
+  },
+  "tokens": {
+    "reported": false,
+    "inputTotal": null,
+    "outputTotal": null,
+    "inputMeanPerCase": null,
+    "outputMeanPerCase": null
+  },
+  "confusion": {
+    "quote": {
+      "quote": 18
+    },
+    "urgent_issue": {
+      "quote": 1,
+      "urgent_issue": 8,
+      "manual_review": 3
+    },
+    "schedule_change": {
+      "schedule_change": 9,
+      "manual_review": 2
+    },
+    "manual_review": {
+      "manual_review": 11
+    }
+  },
+  "targets": {
+    "accuracy": 0.9,
+    "urgentRecall": 1.0,
+    "inventedFacts": 0
+  },
+  "targetsMet": {
+    "accuracy": false,
+    "urgentRecall": false,
+    "noInventedFactsAfterGuardrails": true
+  },
+  "perCase": [
+    {
+      "id": "eval-001",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-002",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-003",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-004",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-005",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-006",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": [
+        "pickupLocation: missed 'Whitesboro'",
+        "destination: missed 'Sherman'"
+      ]
+    },
+    {
+      "id": "eval-007",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": [
+        "pickupLocation: missed 'Denison'",
+        "contactName: missed 'Omar'"
+      ]
+    },
+    {
+      "id": "eval-008",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": [
+        "contactName: missed 'Rachel Kim'"
+      ]
+    },
+    {
+      "id": "eval-009",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": [
+        "pickupLocation: missed 'Pottsboro'"
+      ]
+    },
+    {
+      "id": "eval-010",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": [
+        "destination: missed 'Van Alstyne'"
+      ]
+    },
+    {
+      "id": "eval-011",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-012",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-013",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-014",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-015",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-016",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "low",
+      "correct": true,
+      "extractionErrors": [
+        "pickupLocation: missed 'Howe'"
+      ]
+    },
+    {
+      "id": "eval-017",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": [
+        "pickupLocation: missed 'Sherman'",
+        "destination: missed 'Denison'"
+      ]
+    },
+    {
+      "id": "eval-018",
+      "expected": "quote",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": [
+        "pickupLocation: missed 'Tom Bean'"
+      ]
+    },
+    {
+      "id": "eval-019",
+      "expected": "urgent_issue",
+      "predicted": "quote",
+      "priority": "normal",
+      "correct": false,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-020",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-021",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-022",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-023",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-024",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-025",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-026",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-027",
+      "expected": "urgent_issue",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": false,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-028",
+      "expected": "urgent_issue",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": false,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-029",
+      "expected": "urgent_issue",
+      "predicted": "urgent_issue",
+      "priority": "urgent",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-030",
+      "expected": "urgent_issue",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": false,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-031",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-032",
+      "expected": "schedule_change",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": false,
+      "extractionErrors": [
+        "movingDate: expected 'Saturday', got 'Thursday'"
+      ]
+    },
+    {
+      "id": "eval-033",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-034",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-035",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "high",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-036",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-037",
+      "expected": "schedule_change",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": false,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-038",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-039",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-040",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-041",
+      "expected": "schedule_change",
+      "predicted": "schedule_change",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-042",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-043",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-044",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-045",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-046",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-047",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-048",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-049",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-050",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-051",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    },
+    {
+      "id": "eval-052",
+      "expected": "manual_review",
+      "predicted": "manual_review",
+      "priority": "normal",
+      "correct": true,
+      "extractionErrors": []
+    }
+  ],
+  "caveat": "Synthetic dataset of 52 messages. Results describe this dataset only and do not establish production accuracy."
+}

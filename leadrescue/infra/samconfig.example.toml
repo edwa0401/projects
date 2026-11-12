@@ -1,0 +1,13 @@
+# Copy to infra/samconfig.toml and edit. Do not commit account-specific values you consider sensitive.
+version = 0.1
+[default.deploy.parameters]
+stack_name = "leadrescue"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
+resolve_s3 = true
+parameter_overrides = [
+  "BedrockModelId=us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "CognitoDomainPrefix=leadrescue-yourname-demo",
+  "AllowedOrigin=http://localhost:5173",
+]
